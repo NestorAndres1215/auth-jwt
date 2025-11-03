@@ -6,6 +6,7 @@ import com.example.auth_jwt.dto.RegisterRequest;
 import com.example.auth_jwt.entity.Usuario;
 import com.example.auth_jwt.security.JwtUtil;
 import com.example.auth_jwt.service.UsuarioService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,19 +15,14 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final UsuarioService usuarioService;
     private final JwtUtil jwtUtil;
 
-    public AuthController(AuthenticationManager authenticationManager,
-                          UsuarioService usuarioService,
-                          JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
-        this.usuarioService = usuarioService;
-        this.jwtUtil = jwtUtil;
-    }
+
 
     // Registro de usuario
     @PostMapping("/register")

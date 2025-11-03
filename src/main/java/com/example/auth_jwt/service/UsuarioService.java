@@ -4,25 +4,19 @@ import com.example.auth_jwt.entity.Rol;
 import com.example.auth_jwt.entity.Usuario;
 import com.example.auth_jwt.repository.RolRepository;
 import com.example.auth_jwt.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
     private final RolRepository rolRepository;
     private final PasswordEncoder passwordEncoder;
-
-    public UsuarioService(UsuarioRepository usuarioRepository,
-                          RolRepository rolRepository,
-                          PasswordEncoder passwordEncoder) {
-        this.usuarioRepository = usuarioRepository;
-        this.rolRepository = rolRepository;
-        this.passwordEncoder = passwordEncoder;
-    }
 
     // Registrar un usuario con rol
     public Usuario registrarUsuario(String username, String password, String rolNombre) {
@@ -33,12 +27,12 @@ public class UsuarioService {
         Rol rol = rolRepository.findByNombre(rolNombre)
                 .orElseThrow(() -> new RuntimeException("Rol no encontrado: " + rolNombre));
 
-        Usuario usuario = new Usuario();
-        usuario.setUsername(username);
-        usuario.setPassword(passwordEncoder.encode(password)); // Se encripta la contraseña
-        usuario.setRol(rol);
-        usuario.setEnabled(true);
-
+        Usuario usuario = Usuario.builder()
+                .username(username)
+                .password(passwordEncoder.encode(password))
+                .rol(rol)
+                .enabled(true)
+                .build();
         return usuarioRepository.save(usuario);
     }
 
