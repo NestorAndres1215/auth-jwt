@@ -28,11 +28,7 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<?> registrarUsuario(@RequestBody RegisterRequest request) {
         try {
-            Usuario usuario = usuarioService.registrarUsuario(
-                    request.getUsername(),
-                    request.getPassword(),
-                    request.getRol()
-            );
+            Usuario usuario = usuarioService.registrarUsuario(request);
             return ResponseEntity.ok("Usuario registrado: " + usuario.getUsername());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
